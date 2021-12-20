@@ -33,13 +33,31 @@ const createUser = async (req, res) => {
   });
 };
 
-// TODO
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, email } = req.body;
+
+  const userUpdate = await pool.query(
+    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
+    [name, email, id]
+  );
+
+  console.log(userUpdate);
+
+  res.json('User Updated Succesfully ');
+};
+
 const deleteUser = async (req, res) => {
-  //
+  const { id } = req.params;
+  await pool.query('DELETE FROM users WHERE id = $1', [id]);
+
+  res.json(`User ${id} deleted successfully`);
 };
 
 module.exports = {
   createUser,
+  deleteUser,
   getUserById,
   getUsers,
+  updateUser,
 };
